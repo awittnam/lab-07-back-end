@@ -11,7 +11,11 @@
     "type": "git",
     "url": "git+https://github.com/awittnam/lab-07-back-end.git"
   },
+<<<<<<< HEAD
   "author": "Adam Wittnam & Julie Ly",
+=======
+  "author": "Julie Ly and Adam Wittnam",
+>>>>>>> 7deeb7840fe80879d479724e7a59e976b09d376a
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/awittnam/lab-07-back-end/issues"
