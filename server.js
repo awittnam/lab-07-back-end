@@ -33,10 +33,10 @@ function handleError(err, res) {
 
 // Models
 function Location(query, res) {
-  this.search_query = query;
-  this.formatted_query = res.body.results[0].formatted_address;
-  this.latitude = res.body.results[0].geometry.location.lat;
-  this.longitude = res.body.results[0].geometry.location.lng;
+  this.search_query = query;  //query is coming from superagent, which comes from searchToLatLong, coming from searchToLatLong(the user input): user inputs location which goes into searchToLatLong as a perameter which creates the obj.  
+  this.formatted_query = res.body.results[0].formatted_address; //the res. is the data returned from superagent from the API.
+  this.latitude = res.body.results[0].geometry.location.lat;//the res. is the data returned from superagent from the API.
+  this.longitude = res.body.results[0].geometry.location.lng;//the res. is the data returned from superagent from the API.
 }
 
 function Weather(day) {
