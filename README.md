@@ -41,3 +41,14 @@ Start time: 11:00
 Finish time: 11:15
 
 Actual time needed to complete: 15 mins
+
+------------
+Number and name of feature: Feature #3: Retrieve movie information
+
+Estimate of time needed to complete: 1.5 hours
+
+Start time: 11:30
+
+Finish time: 
+
+Actual time needed to complete: 15 mins

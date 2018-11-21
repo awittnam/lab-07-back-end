@@ -23,6 +23,8 @@ app.get('/location', (request, response) => {
 
 app.get('/weather', getWeather);
 
+app.get('/movies', getMovies);
+
 // Make sure the server is listening for requests
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
 
@@ -44,6 +46,17 @@ function Weather(day) {
   this.forecast = day.summary;
   this.time = new Date(day.time * 1000).toString().slice(0, 15);
 }
+
+function Movie(query,res) {
+  this.title = query.title;
+  this.released_on = query.release_date; 
+  this.total_votes = query.vote_count;
+  this.average_votes = query.vote_average;
+  this.popularity = query.popularity;
+  this.image_url = query.poster_path;
+  this.overview = query.overview;
+}
+
 
 // Helper Functions
 function searchToLatLong(query) {
@@ -70,3 +83,18 @@ function getWeather(request, response) {
     })
     .catch(error => handleError(error, response));
 }
+
+function getMovies(request, response) {
+  const movieUrl = `https://api.themoviedb.org/3/movie/76341?api_key=${process.env.MOVIE_API_KEY}`;
+  //QUESTION: should we beware this address didn't ask for a location
+  superagent.get(movieUrl)
+    .then( (result) => {
+      const movieSummaries = result.body.map( (info) => {
+        return new Movie(info);
+      });
+      response.send(movieSummaries);
+    })
+    .catch(error => handleError(error, response));
+}
+
+
