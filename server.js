@@ -1,9 +1,9 @@
 'use strict';
 
 // Application Dependencies
-const express = require('express');
-const superagent = require('superagent');
-const cors = require('cors');
+const express = require('express'); //telling app to use the express library
+const superagent = require('superagent');  //telling app to use the superagent proxy
+const cors = require('cors');  //telling app to use the CORS library
 
 // Load environment variables from .env file
 require('dotenv').config();
@@ -15,9 +15,9 @@ app.use(cors());
 
 // API Routes
 app.get('/location', (request, response) => {
-  searchToLatLong(request.query.data)
-    .then(location => response.send(location))
-    .catch(error => handleError(error, response));
+  searchToLatLong(request.query.data) //the clients input that is given to the proxy to talk to the API.
+    .then(location => response.send(location)) //awaits response from superagent before responding to client 
+    .catch(error => handleError(error, response)); //is there is an error it will call this function which return the error message
 })
 
 app.get('/weather', getWeather);
