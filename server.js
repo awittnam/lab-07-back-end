@@ -1,9 +1,9 @@
 'use strict';
 
 // Application Dependencies
-const express = require('express');
-const superagent = require('superagent');
-const cors = require('cors');
+const express = require('express'); //telling app to use the express library
+const superagent = require('superagent');  //telling app to use the superagent proxy
+const cors = require('cors');  //telling app to use the CORS library
 
 // Load environment variables from .env file
 require('dotenv').config();
