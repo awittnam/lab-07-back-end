@@ -1,5 +1,6 @@
 'use strict';
 
+
 // Application Dependencies
 const express = require('express'); //telling app to use the express library
 const superagent = require('superagent');  //telling app to use the superagent proxy
@@ -62,6 +63,7 @@ function getWeather(request, response) {
     .then(result => {
       const weatherSummaries = result.body.daily.data.map(day => {
         return new Weather(day);
+  
       });
 
       response.send(weatherSummaries);

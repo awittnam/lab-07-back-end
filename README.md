@@ -30,3 +30,14 @@ Actual time needed to complete: _____
 ## Credits and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
 -->
+
+------------
+Number and name of feature: Feature #1: Consistently format data
+
+Estimate of time needed to complete: 15min
+
+Start time: 11:00
+
+Finish time: 11:15
+
+Actual time needed to complete: 15 mins
