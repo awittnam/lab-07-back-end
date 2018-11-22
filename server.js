@@ -23,14 +23,14 @@ app.get('/location', (request, response) => {
 
 app.get('/weather', getWeather);
 
-app.get('/movies', (request, response) => {
-  getMovies(request.query.data)
-    .then(res => {
-      console.log('getMOvies', res);
-      response.send(res);
-    })
-    .catch(error => handleError(error, response));
-});
+// app.get('/movies', (request, response) => {
+//   getMovies(request.query.data)
+//     .then(res => {
+//       console.log('getMOvies', res);
+//       response.send(res);
+//     })
+//     .catch(error => handleError(error, response));
+// });
 //which once we re-write getMovies to be like Get weather, then this can all go away and be like getWeather.
 
 // Make sure the server is listening for requests
@@ -55,16 +55,16 @@ function Weather(day) {
   this.time = new Date(day.time * 1000).toString().slice(0, 15);
 }
 
-function Movie(query, res) {
-  this.title = res.title;
-  this.released_on = res.release_date; 
-  this.total_votes = res.vote_count;
-  this.average_votes = res.vote_average;
-  this.popularity = res.popularity;
-  this.image_url = res.poster_path;
-  this.overview = res.overview;
-  console.log(this);
-}
+// function Movie(query, res) {
+//   this.title = res.title;
+//   this.released_on = res.release_date; 
+//   this.total_votes = res.vote_count;
+//   this.average_votes = res.vote_average;
+//   this.popularity = res.popularity;
+//   this.image_url = res.poster_path;
+//   this.overview = res.overview;
+//   console.log(this);
+// }
 
 
 // Helper Functions
@@ -91,22 +91,22 @@ function getWeather(request, response) {
     .catch(error => handleError(error, response));
 }
 
-function getMovies(query) {
-  const movieUrl = `https://api.themoviedb.org/3/movie/76341?api_key=${process.env.MOVIE_API_KEY}`;
-  //QUESTION: should we beware this address didn't ask for a location
-  //because it isn't movies playing around your queried location, it is movies filmed in/by location
-  //need to change URL to search with city, see slack
-  //which will return an array of movies so then we will need to re-write this like the getWeather instead
-  //hint request.query.data.search_query
+// function getMovies(query) {
+//   const movieUrl = `https://api.themoviedb.org/3/movie/76341?api_key=${process.env.MOVIE_API_KEY}`;
+//   //QUESTION: should we beware this address didn't ask for a location
+//   //because it isn't movies playing around your queried location, it is movies filmed in/by location
+//   //need to change URL to search with city, see slack
+//   //which will return an array of movies so then we will need to re-write this like the getWeather instead
+//   //hint request.query.data.search_query
 
-  superagent.get(movieUrl)
-    .then( (result) => {
-      console.log(query);
-      console.log('resBod', result.body)
-      return new Movie(query, result.body);
-    })
-    .catch(error => handleError(error));
-}
+//   superagent.get(movieUrl)
+//     .then( (result) => {
+//       console.log(query);
+//       console.log('resBod', result.body)
+//       return new Movie(query, result.body);
+//     })
+//     .catch(error => handleError(error));
+// }
 
 //hint for yelp
 //  look at superagent docs
