@@ -23,15 +23,9 @@ app.get('/location', (request, response) => {
 
 app.get('/weather', getWeather);
 
-// app.get('/movies', (request, response) => {
-//   getMovies(request.query.data)
-//     .then(res => {
-//       console.log('getMOvies', res);
-//       response.send(res);
-//     })
-//     .catch(error => handleError(error, response));
-// });
-//which once we re-write getMovies to be like Get weather, then this can all go away and be like getWeather.
+app.get('/yelp', getYelp);
+
+app.get('/movies', getMovies);
 
 // Make sure the server is listening for requests
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
@@ -55,17 +49,24 @@ function Weather(day) {
   this.time = new Date(day.time * 1000).toString().slice(0, 15);
 }
 
-// function Movie(query, res) {
-//   this.title = res.title;
-//   this.released_on = res.release_date; 
-//   this.total_votes = res.vote_count;
-//   this.average_votes = res.vote_average;
-//   this.popularity = res.popularity;
-//   this.image_url = res.poster_path;
-//   this.overview = res.overview;
-//   console.log(this);
-// }
+function Food(place) {
+  this.url = place.url;
+  this.name = place.name;
+  this.rating = place.rating; 
+  this.price = place.price;
+  this.image_url = place.image_url;
+  console.log(this);
+}
 
+function Movie(query) {
+  this.title = query.title;
+  this.released_on = query.release_date;
+  this.total_votes = query.vote_count;
+  this.average_votes = query.vote_average;
+  this.popularity = query.popularity;
+  this.image_url = ('http://image.tmdb.org/t/p/w185/'+query.poster_path);
+  this.overview = query.overview;
+}
 
 // Helper Functions
 function searchToLatLong(query) {
@@ -91,25 +92,30 @@ function getWeather(request, response) {
     .catch(error => handleError(error, response));
 }
 
-// function getMovies(query) {
-//   const movieUrl = `https://api.themoviedb.org/3/movie/76341?api_key=${process.env.MOVIE_API_KEY}`;
-//   //QUESTION: should we beware this address didn't ask for a location
-//   //because it isn't movies playing around your queried location, it is movies filmed in/by location
-//   //need to change URL to search with city, see slack
-//   //which will return an array of movies so then we will need to re-write this like the getWeather instead
-//   //hint request.query.data.search_query
+function getYelp(req, res){
+  const yelpUrl = `https://api.yelp.com/v3/businesses/search?latitude=${req.query.data.latitude}&longitude=${req.query.data.longitude}`;
 
-//   superagent.get(movieUrl)
-//     .then( (result) => {
-//       console.log(query);
-//       console.log('resBod', result.body)
-//       return new Movie(query, result.body);
-//     })
-//     .catch(error => handleError(error));
-// }
+  superagent.get(yelpUrl)
+    .set('Authorization', `Bearer ${process.env.YELP_API_KEY}`)
+    .then(yelpResult => {
+      console.log('yelpResult', yelpResult.body.businesses[0]);
+      const yelpSummaries = yelpResult.body.businesses.map(place => {
+        return new Food(place);
+      });
+      res.send(yelpSummaries);
+    })
+    .catch(error => handleError(error, res));
+}
 
-//hint for yelp
-//  look at superagent docs
-//  will use superagent.set after superagent.get
-//  the api key isn't used in the URL
+function getMovies(query,response) {
+  const movieUrl = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${query}`;
 
+  superagent.get(movieUrl)
+    .then(resultFromSuper => {
+      const movieSummaries = resultFromSuper.body.results.map(movieItem => {
+        return new Movie(movieItem);
+      });
+      response.send(movieSummaries);
+    })
+    .catch(error => handleError(error, response));
+}
